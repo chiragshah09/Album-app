@@ -9,6 +9,7 @@ const App = () => {
   const [openPhotos, setOpenPhotos] = useState(false);
   const [loader, setLoader] = useState(true);
 
+
   useEffect(() => {
     fetchData();
   },[]); 
@@ -36,13 +37,13 @@ const App = () => {
     setPhotos(data1);
   }
 
+
   return (
     <div>
       
       {loader? <Loader type="Oval" color="#00BFFF" height={200} width={200} style= {{textAlign: "center", display: "block" , margin: "150px auto"}}/> : null}
       {!openPhotos && !loader ? 
-      <AlbumsList albums={albums} header="Album App" onClick={handleClick} />: !loader? <AlbumImage photos={photos} albumdetail={selectedalbum} /> : null
-      }
+      <AlbumsList albums={albums} header="Album App" onClick={handleClick} />: !loader? <AlbumImage photos={photos} albumdetail={selectedalbum}/> : null}
     
      </div>
   );
@@ -54,7 +55,7 @@ const AlbumsList = (props) =>{
     <div  className="Container" >
       <h1>{header}</h1>
       <ul>
-          {albums.map(({id, title}) => (                                                                                                                                                          
+          {albums.map(({id, title}) => (                                                                                                                             
             <li key={id} onClick={onClick} id={id}>{title}</li>
           ))}
       </ul> 
@@ -65,23 +66,31 @@ const AlbumsList = (props) =>{
 
 const AlbumImage = (props) =>{
   const {photos, albumdetail: {title}} = props;
+  const [openModalbox, setOpenModal] = useState(false);
+  const [selectedimg, setselectedimg] = useState([]);
   const openModal = (e) =>{
-    
+    setOpenModal(true);
+    var data = photos.filter((photo) => (photo.id == e.target.id))
     console.log(e.target.id);
+    setselectedimg(data)
   }
   const getRandomSize = (min, max) => {
     return Math.round(Math.random() * (max - min) + min);
   }
   return(
     <div  className="Container" >
-       <h1>Our Gallary</h1>
-      
-       <p>Album Name:<span> {title} </span></p>
-      
-        <div className="photos-grid">
-                  {photos.map(({id,thumbnailUrl,title}) => (<img src={thumbnailUrl} id={id}  onClick={openModal} alt={title} height={getRandomSize(200, 400)} /> ))}
-        </div> 
-
+    
+       {!openModalbox ? <div> 
+         <h1>Our Gallery</h1>
+          <p>Album Name:<span> {title} </span></p>
+          <div className="photos-grid">
+            {photos.map(({id,thumbnailUrl,title}) => (<img src={thumbnailUrl} id={id}  onClick={openModal} alt={title} height={getRandomSize(200, 400)} /> ))}
+          </div> </div> : <div> 
+            <h1>Selected Image</h1>
+            <p>Album Name:<span> {title} </span></p>
+           { selectedimg.map(({url,title}) =>(<div><img src={url} className="single-img" alt={title}/><h3 style={{textAlign:"center"}}>image Name : {title}</h3> </div>))} </div>
+       }
+       
     </div>
   )
 }

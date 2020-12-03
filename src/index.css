@@ -33,7 +33,13 @@ img{
   margin: auto;
   width: 100%;
 }
-
+p{
+  margin: 30px 50px;
+}
+p span{ 
+ font-style: italic;
+ font-weight: bold;
+}
 h1 {
   margin-block-start: 0;
   MARGIN-BLOCK-END: 0;
@@ -45,6 +51,9 @@ h1 {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-gap: 10px;
   grid-auto-rows: 200px;
+}
+.single-img {
+  width: 400px;
 }
 .photos-grid {
   /* Prevent vertical gaps */
